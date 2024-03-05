@@ -1,27 +1,38 @@
 "use strict";
 
+/* variabler */
+
+const searchBtnEl = document.getElementById("searchBtn");
+const searchValue = document.getElementById("gameInput");
 
 
+/* eventhandlers */
 
-/* Hämta  API */
-const url = 'https://opencritic-api.p.rapidapi.com/game/search?criteria=helldivers';
-const options = {
-	method: 'GET',
-	headers: {
-		'X-RapidAPI-Key': '7dd4cb536emshace755aa949c97bp16ae4ajsn31b792268097',
-		'X-RapidAPI-Host': 'opencritic-api.p.rapidapi.com'
-	}
-};
+searchBtnEl.addEventListener("click", fetchGame, false);
 
 
-async function fetchSteam() {
+/* Hämta  API  */
+
+async function fetchGame() {
+
+    /* variabler för OpenCritic API */
+    const url1 = `https://opencritic-api.p.rapidapi.com/game/search?criteria=${searchValue.value}`;
+    const options1 = {
+        method: 'GET',
+        headers: {
+            'X-RapidAPI-Key': '7dd4cb536emshace755aa949c97bp16ae4ajsn31b792268097',
+            'X-RapidAPI-Host': 'opencritic-api.p.rapidapi.com'
+        }
+    };
     try {
-        const response = await fetch(url, options);
-        const result = await response.text();
+        const response = await fetch(url1, options1);
+        const result = await response.json();
         console.log(result);
     } catch (error) {
         console.error(error);
     }
 }
 
-/* window.onload = fetchSteam(); */
+function clickEvent() {
+    console.log(searchValue.value);
+} 
