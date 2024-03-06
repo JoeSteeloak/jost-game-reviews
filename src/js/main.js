@@ -13,6 +13,13 @@ const options1 = {
         'X-RapidAPI-Host': 'opencritic-api.p.rapidapi.com'
     }
 };
+const options2 = {
+	method: 'GET',
+	headers: {
+		'X-RapidAPI-Key': '7dd4cb536emshace755aa949c97bp16ae4ajsn31b792268097',
+		'X-RapidAPI-Host': 'steam-api7.p.rapidapi.com'
+	}
+};
 
 
 /* eventhandlers */
@@ -44,7 +51,7 @@ async function fetchGame() {
             gameNameEl.textContent = gameName;
 
             gameContainer.addEventListener("click", () => {
-                showReview(gameId); //Event listener för att ta fram recensioner och bild på spelet
+                showReview(gameId, gameName); //Event listener för att ta fram recensioner och bilder på spelet
             });
             gameContainer.appendChild(gameNameEl);
             gameResultEl.appendChild(gameContainer);
@@ -55,19 +62,42 @@ async function fetchGame() {
 };
 
 // funktion för att visa spelet och recensionerna
-async function showReview(gameId) {
+async function showReview(gameId, gameName) {
     const urlReview = `https://opencritic-api.p.rapidapi.com/reviews/game/${gameId}?skip=3&sort=newest`;
+    const urlSteamGameId = `https://steam-api7.p.rapidapi.com/search?query=${gameName}&limit=3`;
+    
 
 
 
     try {
+
+        /* fetch recensioner från API 1 */
         const response = await fetch(urlReview, options1);
         const result = await response.json();
 
+        /* mash up för att hämta gameId */
+        const response1 = await fetch(urlSteamGameId, options2);
+        const result1 = await response1.json();
+        console.log(gameName);
+        console.log(result1);
+        console.log(result1[0].appid);
+
+        const urlScreenshots = `https://steam-api7.p.rapidapi.com/media/screenshots/${result1[0].appid}`;
+
+        /* fetch screenshots från API2 */
+        const response2 = await fetch(urlScreenshots, options2);
+        const result2 = await response2.json();
+
+        /* testa */
         console.log(result);
 
+        /* skapa screenshots */
+        const screenshotEl = document.createElement('img');
+        screenshotEl.src = result2.screenshots[0];
+        gameReviewEl.appendChild(screenshotEl);
+
         /* Ladda in 3 recensioner och skapa en div för varje resultat */
-        for (let i = 0; i < 2; i++) {
+        for (let i = 0; i < 3; i++) {
             const reviewTitle = result[i].title;
             const reviewScore = result[i].score;
             const reviewOutlet = result[i].Outlet.name;
