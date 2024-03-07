@@ -31,12 +31,17 @@ searchBtnEl.addEventListener("click", fetchGame, false);
 
 async function fetchGame() {
 
+    /* rensa gamal sökning */
+    gameResultEl.innerHTML = '';
+    gameReviewEl.innerHTML = '';
+
     /* variabler för OpenCritic API: Game Search */
     const url1 = `https://opencritic-api.p.rapidapi.com/game/search?criteria=${searchValue.value}`;
 
     try {
         const response = await fetch(url1, options1);
         const result = await response.json();
+
 
         /* Ladda in namn och skapa en div för varje resultat */
         result.forEach(e => {
@@ -64,9 +69,10 @@ async function showReview(gameId, gameName) {
     const urlReview = `https://opencritic-api.p.rapidapi.com/reviews/game/${gameId}?skip=3&sort=newest`;
     const urlSteamGameId = `https://steam-api7.p.rapidapi.com/search?query=${gameName}&limit=1`;
 
+/* rensa diven på recensioner */
+gameReviewEl.innerHTML = '';
 
     try {
-
         /* fetch recensioner från API 1 */
         const response = await fetch(urlReview, options1);
         const result = await response.json();
@@ -75,16 +81,19 @@ async function showReview(gameId, gameName) {
         const response1 = await fetch(urlSteamGameId, options2);
         const result1 = await response1.json();
 
-        const urlScreenshots = `https://steam-api7.p.rapidapi.com/media/screenshots/${result1.results[0].appid}`;
+        if (result1.results.length > 0) { //skapa screenshot ifall de hittas
+            const urlScreenshots = `https://steam-api7.p.rapidapi.com/media/screenshots/${result1.results[0].appid}`;
 
-        /* fetch screenshots från API2 */
-        const response2 = await fetch(urlScreenshots, options2);
-        const result2 = await response2.json();
+            /* fetch screenshots från API2 */
+            const response2 = await fetch(urlScreenshots, options2);
+            const result2 = await response2.json();
 
-        /* skapa screenshots */
-        const screenshotEl = document.createElement('img');
-        screenshotEl.src = result2.screenshots[0];
-        gameReviewEl.appendChild(screenshotEl);
+            /* skapa screenshots */
+            const screenshotEl = document.createElement('img');
+            screenshotEl.src = result2.screenshots[0];
+            gameReviewEl.appendChild(screenshotEl);
+        }
+
 
         /* Ladda in 3 recensioner och skapa en div för varje resultat */
         for (let i = 0; i < 3; i++) {
@@ -93,7 +102,7 @@ async function showReview(gameId, gameName) {
             const reviewOutlet = result[i].Outlet.name;
             const reviewSnippet = result[i].snippet;
             const reviewUrl = result[i].externalUrl;
-            gameReviewEl.innerHTML += `<div><h1>${reviewTitle}</h1><p>${reviewSnippet}</p><h2>${reviewScore}</h2><p>Published on:${reviewOutlet}</p><a href=${reviewUrl}>Läs mer</a></div>`;
+            gameReviewEl.innerHTML += `<div><h1>${reviewTitle}</h1><p>${reviewSnippet}</p><h2>${reviewScore}</h2><p>Published in: ${reviewOutlet}</p><a href=${reviewUrl}>Läs mer</a></div>`;
         }
 
     } catch (error) {
