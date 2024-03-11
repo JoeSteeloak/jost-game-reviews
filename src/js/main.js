@@ -69,8 +69,8 @@ async function showReview(gameId, gameName) {
     const urlReview = `https://opencritic-api.p.rapidapi.com/reviews/game/${gameId}?skip=3&sort=newest`;
     const urlSteamGameId = `https://steam-api7.p.rapidapi.com/search?query=${gameName}&limit=1`;
 
-/* rensa diven på recensioner */
-gameReviewEl.innerHTML = '';
+    /* rensa diven på recensioner */
+    gameReviewEl.innerHTML = '';
 
     try {
         /* fetch recensioner från API 1 */
@@ -81,7 +81,8 @@ gameReviewEl.innerHTML = '';
         const response1 = await fetch(urlSteamGameId, options2);
         const result1 = await response1.json();
 
-        if (result1.results.length > 0) { //skapa screenshot ifall de hittas
+        if (result1.results.length > 0) { //skapa screenshots ifall de hittas
+
             const urlScreenshots = `https://steam-api7.p.rapidapi.com/media/screenshots/${result1.results[0].appid}`;
 
             /* fetch screenshots från API2 */
@@ -89,9 +90,16 @@ gameReviewEl.innerHTML = '';
             const result2 = await response2.json();
 
             /* skapa screenshots */
-            const screenshotEl = document.createElement('img');
-            screenshotEl.src = result2.screenshots[0];
-            gameReviewEl.appendChild(screenshotEl);
+            for (let i = 0; i < result2.screenshots.length; i++) {
+
+
+
+                const screenshotEl = document.createElement('img');
+                const screenshotDiv = document.createElement('div');
+                screenshotEl.src = result2.screenshots[i];
+                screenshotDiv.appendChild(screenshotEl);
+                gameReviewEl.appendChild(screenshotDiv);
+            }
         }
 
 
@@ -102,7 +110,7 @@ gameReviewEl.innerHTML = '';
             const reviewOutlet = result[i].Outlet.name;
             const reviewSnippet = result[i].snippet;
             const reviewUrl = result[i].externalUrl;
-            gameReviewEl.innerHTML += `<div><h1>${reviewTitle}</h1><p>${reviewSnippet}</p><h2>${reviewScore}</h2><p>Published in: ${reviewOutlet}</p><a href=${reviewUrl}>Läs mer</a></div>`;
+            gameReviewEl.innerHTML += `<div><h1>${gameName}</h1><h2>${reviewTitle}</h2><p>${reviewSnippet}</p><h3>${reviewScore} / 100</h3><p>Published in: ${reviewOutlet}</p><a href=${reviewUrl}>Läs mer</a></div>`;
         }
 
     } catch (error) {
