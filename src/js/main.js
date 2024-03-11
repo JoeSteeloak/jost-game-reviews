@@ -89,19 +89,33 @@ async function showReview(gameId, gameName) {
             const response2 = await fetch(urlScreenshots, options2);
             const result2 = await response2.json();
 
+            /* skapa diven för slideshow */
+
+            const slideshowContainerEl = document.createElement('div');
+            slideshowContainerEl.classList.add('slideshow-container');
+            gameReviewEl.appendChild(slideshowContainerEl);
+
             /* skapa screenshots */
             for (let i = 0; i < result2.screenshots.length; i++) {
-
-
-
+                /* skapa bilden */
                 const screenshotEl = document.createElement('img');
-                const screenshotDiv = document.createElement('div');
                 screenshotEl.src = result2.screenshots[i];
-                screenshotDiv.appendChild(screenshotEl);
-                gameReviewEl.appendChild(screenshotDiv);
+                screenshotEl.classList.add('mySlides');
+                screenshotEl.classList.add('fade');
+                /* skapa sliden */
+                const mySlidesEl = document.createElement('div');
+                /* skapa index */
+                const numberTextEl = document.createElement('div');
+                numberTextEl.classList.add('numbertext');
+                numberTextEl.innerHTML = `${i + 1}/ ${result2.screenshots.length}`;
+
+                /* klistra ihop i DOM */
+                mySlidesEl.appendChild(numberTextEl);
+                mySlidesEl.appendChild(screenshotEl);
+                slideshowContainerEl.appendChild(mySlidesEl);
+                gameReviewEl.appendChild(slideshowContainerEl);
             }
         }
-
 
         /* Ladda in 3 recensioner och skapa en div för varje resultat */
         for (let i = 0; i < 3; i++) {
@@ -110,7 +124,7 @@ async function showReview(gameId, gameName) {
             const reviewOutlet = result[i].Outlet.name;
             const reviewSnippet = result[i].snippet;
             const reviewUrl = result[i].externalUrl;
-            gameReviewEl.innerHTML += `<div><h1>${gameName}</h1><h2>${reviewTitle}</h2><p>${reviewSnippet}</p><h3>${reviewScore} / 100</h3><p>Published in: ${reviewOutlet}</p><a href=${reviewUrl}>Läs mer</a></div>`;
+            gameReviewEl.innerHTML += `<div class='review'><h1>${gameName}</h1><h2>${reviewTitle}</h2><p>${reviewSnippet}</p><h3>${reviewScore} / 100</h3><p>Published in: ${reviewOutlet}</p><a href=${reviewUrl}>Läs mer</a></div>`;
         }
 
     } catch (error) {
