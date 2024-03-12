@@ -4,6 +4,8 @@
 
 /* variabler */
 
+let slideIndex = 1;
+
 const searchBtnEl = document.getElementById("searchBtn");
 const searchValue = document.getElementById("gameInput");
 const gameResultEl = document.getElementById("gameResult");
@@ -127,14 +129,19 @@ async function showReview(gameId, gameName) {
 
             const nextBtnEl = document.createElement('a');
             nextBtnEl.classList.add('next');
+            nextBtnEl.id = 'next';
             nextBtnEl.innerHTML = `&#10095;`;
             slideshowContainerEl.appendChild(nextBtnEl);
-            /* nextBtnEl.addEventListener('click', plusSlides(1), false); */
+
+                       /* slideshow control */
+            
+
+            
 
             /* skapa cirklarna för slideshowen i DOM */
             
             const dotTray = document.createElement('div');
-            /* dotTray.style.textAlign = 'center'; */
+            dotTray.style.textAlign = 'center';
 
             const dot1 = document.createElement("span");
             dot1.classList.add('dot');
@@ -151,13 +158,34 @@ async function showReview(gameId, gameName) {
             gameReviewEl.appendChild(dot3);
             /* dot1.addEventListener('click', currentSlide(3), false); */
 
+            
+
 
         }
 
-        /* SLIDESHOW */
-            /* slideshow control */
-            let slideIndex = 1;
-            showSlides(slideIndex);
+      
+
+        /* Ladda in 3 recensioner och skapa en div för varje resultat */
+        for (let i = 0; i < 3; i++) {
+            const reviewTitle = result[i].title;
+            const reviewScore = result[i].score;
+            const reviewOutlet = result[i].Outlet.name;
+            const reviewSnippet = result[i].snippet;
+            const reviewUrl = result[i].externalUrl;
+            gameReviewEl.innerHTML += `<div class='review'><h1>${gameName}</h1><h2>${reviewTitle}</h2><p>${reviewSnippet}</p><h3>${reviewScore} / 100</h3><p>Published in: ${reviewOutlet}</p><a href=${reviewUrl}>Läs mer</a></div>`;
+        }
+
+        showSlides(slideIndex);
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+/* let nextBtn = document.getElementById('next');
+nextBtn.addEventListener('click', plusSlides(1), false); */
+  /* SLIDESHOW */
+ 
 
             // Next/previous controls
             function plusSlides(n) {
@@ -184,22 +212,8 @@ async function showReview(gameId, gameName) {
                 slides[slideIndex - 1].style.display = "block";
                 dots[slideIndex - 1].className += " active";
             }
-
-
-        /* Ladda in 3 recensioner och skapa en div för varje resultat */
-        for (let i = 0; i < 3; i++) {
-            const reviewTitle = result[i].title;
-            const reviewScore = result[i].score;
-            const reviewOutlet = result[i].Outlet.name;
-            const reviewSnippet = result[i].snippet;
-            const reviewUrl = result[i].externalUrl;
-            gameReviewEl.innerHTML += `<div class='review'><h1>${gameName}</h1><h2>${reviewTitle}</h2><p>${reviewSnippet}</p><h3>${reviewScore} / 100</h3><p>Published in: ${reviewOutlet}</p><a href=${reviewUrl}>Läs mer</a></div>`;
-        }
-
-
-
-    } catch (error) {
-        console.error(error);
+document.body.addEventListener('click', function(e) {
+    if(e.target.classList.contains('next')) {
+        plusSlides(1);
     }
-}
-
+})
