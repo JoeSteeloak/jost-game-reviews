@@ -1,5 +1,7 @@
 "use strict";
 
+
+
 /* variabler */
 
 const searchBtnEl = document.getElementById("searchBtn");
@@ -100,10 +102,11 @@ async function showReview(gameId, gameName) {
                 /* skapa bilden */
                 const screenshotEl = document.createElement('img');
                 screenshotEl.src = result2.screenshots[i];
-                screenshotEl.classList.add('mySlides');
-                screenshotEl.classList.add('fade');
+                screenshotEl.style.width = "100%";
                 /* skapa sliden */
                 const mySlidesEl = document.createElement('div');
+                mySlidesEl.classList.add('mySlides');
+                mySlidesEl.classList.add('fade');
                 /* skapa index */
                 const numberTextEl = document.createElement('div');
                 numberTextEl.classList.add('numbertext');
@@ -115,7 +118,73 @@ async function showReview(gameId, gameName) {
                 slideshowContainerEl.appendChild(mySlidesEl);
                 gameReviewEl.appendChild(slideshowContainerEl);
             }
+            /* Next and previous buttons*/
+            const prevBtnEl = document.createElement('a');
+            prevBtnEl.classList.add('prev');
+            prevBtnEl.innerHTML = `&#10094;`;
+            slideshowContainerEl.appendChild(prevBtnEl);
+            /* prevBtnEl.addEventListener('click', plusSlides(-1), false); */
+
+            const nextBtnEl = document.createElement('a');
+            nextBtnEl.classList.add('next');
+            nextBtnEl.innerHTML = `&#10095;`;
+            slideshowContainerEl.appendChild(nextBtnEl);
+            /* nextBtnEl.addEventListener('click', plusSlides(1), false); */
+
+            /* skapa cirklarna för slideshowen i DOM */
+            
+            const dotTray = document.createElement('div');
+            /* dotTray.style.textAlign = 'center'; */
+
+            const dot1 = document.createElement("span");
+            dot1.classList.add('dot');
+            gameReviewEl.appendChild(dot1);
+           /*  dot1.addEventListener('click', currentSlide(1), false); */
+
+            const dot2 = document.createElement("span");
+            dot2.classList.add('dot');
+            gameReviewEl.appendChild(dot2);
+           /*  dot1.addEventListener('click', currentSlide(2), false); */
+
+            const dot3 = document.createElement("span");
+            dot3.classList.add('dot');
+            gameReviewEl.appendChild(dot3);
+            /* dot1.addEventListener('click', currentSlide(3), false); */
+
+
         }
+
+        /* SLIDESHOW */
+            /* slideshow control */
+            let slideIndex = 1;
+            showSlides(slideIndex);
+
+            // Next/previous controls
+            function plusSlides(n) {
+                showSlides(slideIndex += n);
+            }
+
+            // Thumbnail image controls
+            function currentSlide(n) {
+                showSlides(slideIndex = n);
+            }
+
+            function showSlides(n) {
+                let i;
+                let slides = document.getElementsByClassName("mySlides");
+                let dots = document.getElementsByClassName("dot");
+                if (n > slides.length) { slideIndex = 1 }
+                if (n < 1) { slideIndex = slides.length }
+                for (i = 0; i < slides.length; i++) {
+                    slides[i].style.display = "none";
+                }
+                for (i = 0; i < dots.length; i++) {
+                    dots[i].className = dots[i].className.replace(" active", "");
+                }
+                slides[slideIndex - 1].style.display = "block";
+                dots[slideIndex - 1].className += " active";
+            }
+
 
         /* Ladda in 3 recensioner och skapa en div för varje resultat */
         for (let i = 0; i < 3; i++) {
@@ -127,7 +196,10 @@ async function showReview(gameId, gameName) {
             gameReviewEl.innerHTML += `<div class='review'><h1>${gameName}</h1><h2>${reviewTitle}</h2><p>${reviewSnippet}</p><h3>${reviewScore} / 100</h3><p>Published in: ${reviewOutlet}</p><a href=${reviewUrl}>Läs mer</a></div>`;
         }
 
+
+
     } catch (error) {
         console.error(error);
     }
 }
+
