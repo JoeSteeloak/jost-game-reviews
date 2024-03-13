@@ -11,10 +11,18 @@ header {
     text-align: center;
     margin: 10% auto;
     margin-top: 0;
-    padding-top: 10%;
+    padding-top: 0;
     font-family: variables.$head-font;
 }
 
 #searchBtn {
     font-family: variables.$head-font;
+}
+
+#welcomeTxt {
+    color: white;
+    font-family: variables.$head-font;
+    margin-top: 0;
+    text-align: center;
+    padding-top: 120px;
 }
