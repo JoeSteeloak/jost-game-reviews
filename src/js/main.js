@@ -145,6 +145,11 @@ async function showReview(gameId, gameName) {
             gameReviewEl.appendChild(dotTray);
         }
 
+        /* lägg in namnet på spelet */
+        gameReviewEl.innerHTML += `<h1>${gameName}</h1>`;
+        /* och ett kryss för att stänga rutan */
+        gameReviewEl.innerHTML += `<i id="closeBtn" class="fa-solid fa-xmark"></i>`
+
         /* Ladda in 3 recensioner och skapa en div för varje resultat */
         for (let i = 0; i < 3; i++) {
             const reviewTitle = result[i].title;
@@ -152,7 +157,7 @@ async function showReview(gameId, gameName) {
             const reviewOutlet = result[i].Outlet.name;
             const reviewSnippet = result[i].snippet;
             const reviewUrl = result[i].externalUrl;
-            gameReviewEl.innerHTML += `<div class='review'><h1>${gameName}</h1><h2>${reviewTitle}</h2><p>${reviewSnippet}</p><h3>${reviewScore} / 100</h3><p>Published in: ${reviewOutlet}</p><a href=${reviewUrl}>Läs mer</a></div>`;
+            gameReviewEl.innerHTML += `<div class='review'><h2>${reviewTitle}</h2><p>${reviewSnippet}</p><h3>${reviewScore} / 100</h3><p id='outlet'>Published in: ${reviewOutlet}</p><a href=${reviewUrl}>Läs mer</a></div>`;
         }
         /* initierar slideshow */
         showSlides(slideIndex);
@@ -209,5 +214,13 @@ document.body.addEventListener('click', function (e) {
 document.body.addEventListener('click', function (e) {
     if (e.target.classList.contains('dot')) {
         currentSlide(e.target.id);
+    }
+})
+
+/* stänga-ner-recensionsfönsterknappen */
+
+document.body.addEventListener('click', function (e) {
+    if (e.target.classList.contains('fa-xmark')) {
+        gameReviewEl.innerHTML = '';
     }
 })

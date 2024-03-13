@@ -1,0 +1,17 @@
+@use "../abstracts/variables";
+
+#gameResult div {
+    text-align: center;
+    border: 1px solid black;
+    margin: 10px auto;
+    width: 40%;
+    font-family: variables.$head-font;
+} 
+
+#gameResult div:hover {
+    cursor: pointer;
+    background-color: black;
+    color: white;
+    transform: scale(1.1);
+    background-image: url("../images/header_image.jpg");;
+    }

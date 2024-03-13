@@ -4,4 +4,9 @@
 @use "base/reset";
 @use "base/typography";
 
-@use "components/slideshow.scss"
+@use "components/slideshow.scss";
+
+@use "layout/header.scss";
+@use "layout/review_window.scss";
+@use "layout/search_results.scss";
+

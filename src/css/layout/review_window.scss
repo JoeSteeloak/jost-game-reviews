@@ -1,0 +1,59 @@
+@use "../abstracts/variables";
+
+#gameReview {
+    font-family: variables.$head-font;
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    width: 80%;
+    background-color: white;
+    border: 1px solid black;
+    margin-bottom: 500px;
+
+    img {
+        padding-top: 50px;
+    }
+
+    .numbertext {
+        padding-top: 65px;
+    }
+}
+
+#closeBtn {
+    position: absolute;
+    top: 1%;
+    right: 1%;
+    font-size: 3em;
+}
+
+#closeBtn:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+#gameReview h1 {
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.review {
+    margin-bottom: 40px;
+    text-align: center;
+}
+.review h1,
+h2,
+h3,
+p,
+a {
+    padding: 10px;
+    max-width: 45em;
+    margin: 0 auto;
+}
+
+.review #outlet {
+    font-style: italic;
+}
+
+.review h3 { /* critic score */
+    font-weight: 800;
+}
