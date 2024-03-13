@@ -4,7 +4,7 @@
 
 /* variabler */
 
-let slideIndex = 1;
+let slideIndex = 1; /* till slideshow */
 
 const searchBtnEl = document.getElementById("searchBtn");
 const searchValue = document.getElementById("gameInput");
@@ -125,7 +125,6 @@ async function showReview(gameId, gameName) {
             prevBtnEl.classList.add('prev');
             prevBtnEl.innerHTML = `&#10094;`;
             slideshowContainerEl.appendChild(prevBtnEl);
-            /* prevBtnEl.addEventListener('click', plusSlides(-1), false); */
 
             const nextBtnEl = document.createElement('a');
             nextBtnEl.classList.add('next');
@@ -133,37 +132,18 @@ async function showReview(gameId, gameName) {
             nextBtnEl.innerHTML = `&#10095;`;
             slideshowContainerEl.appendChild(nextBtnEl);
 
-                       /* slideshow control */
-            
-
-            
-
             /* skapa cirklarna för slideshowen i DOM */
-            
             const dotTray = document.createElement('div');
             dotTray.style.textAlign = 'center';
 
-            const dot1 = document.createElement("span");
-            dot1.classList.add('dot');
-            gameReviewEl.appendChild(dot1);
-           /*  dot1.addEventListener('click', currentSlide(1), false); */
-
-            const dot2 = document.createElement("span");
-            dot2.classList.add('dot');
-            gameReviewEl.appendChild(dot2);
-           /*  dot1.addEventListener('click', currentSlide(2), false); */
-
-            const dot3 = document.createElement("span");
-            dot3.classList.add('dot');
-            gameReviewEl.appendChild(dot3);
-            /* dot1.addEventListener('click', currentSlide(3), false); */
-
-            
-
-
+            for (let i = 0; i < result2.screenshots.length; i++) {
+                const dot = document.createElement("span");
+                dot.classList.add('dot');
+                dot.id = i + 1;
+                dotTray.appendChild(dot);
+            }
+            gameReviewEl.appendChild(dotTray);
         }
-
-      
 
         /* Ladda in 3 recensioner och skapa en div för varje resultat */
         for (let i = 0; i < 3; i++) {
@@ -174,7 +154,7 @@ async function showReview(gameId, gameName) {
             const reviewUrl = result[i].externalUrl;
             gameReviewEl.innerHTML += `<div class='review'><h1>${gameName}</h1><h2>${reviewTitle}</h2><p>${reviewSnippet}</p><h3>${reviewScore} / 100</h3><p>Published in: ${reviewOutlet}</p><a href=${reviewUrl}>Läs mer</a></div>`;
         }
-
+        /* initierar slideshow */
         showSlides(slideIndex);
 
     } catch (error) {
@@ -182,38 +162,52 @@ async function showReview(gameId, gameName) {
     }
 }
 
-/* let nextBtn = document.getElementById('next');
-nextBtn.addEventListener('click', plusSlides(1), false); */
-  /* SLIDESHOW */
- 
 
-            // Next/previous controls
-            function plusSlides(n) {
-                showSlides(slideIndex += n);
-            }
+/* SLIDESHOW */
+// Next/previous controls
+function plusSlides(n) {
+    showSlides(slideIndex += n);
+}
 
-            // Thumbnail image controls
-            function currentSlide(n) {
-                showSlides(slideIndex = n);
-            }
+// Thumbnail image controls
+function currentSlide(n) {
+    showSlides(slideIndex = n);
+}
 
-            function showSlides(n) {
-                let i;
-                let slides = document.getElementsByClassName("mySlides");
-                let dots = document.getElementsByClassName("dot");
-                if (n > slides.length) { slideIndex = 1 }
-                if (n < 1) { slideIndex = slides.length }
-                for (i = 0; i < slides.length; i++) {
-                    slides[i].style.display = "none";
-                }
-                for (i = 0; i < dots.length; i++) {
-                    dots[i].className = dots[i].className.replace(" active", "");
-                }
-                slides[slideIndex - 1].style.display = "block";
-                dots[slideIndex - 1].className += " active";
-            }
-document.body.addEventListener('click', function(e) {
-    if(e.target.classList.contains('next')) {
+function showSlides(n) {
+    let i;
+    let slides = document.getElementsByClassName("mySlides");
+    let dots = document.getElementsByClassName("dot");
+    if (n > slides.length) { slideIndex = 1 }
+    if (n < 1) { slideIndex = slides.length }
+    for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+    }
+    for (i = 0; i < dots.length; i++) {
+        dots[i].className = dots[i].className.replace(" active", "");
+    }
+    slides[slideIndex - 1].style.display = "block";
+    dots[slideIndex - 1].className += " active";
+}
+
+/* eventtrigger för att bläddra framåt bland bilderna */
+document.body.addEventListener('click', function (e) {
+    if (e.target.classList.contains('next')) {
         plusSlides(1);
+    }
+})
+
+/* eventtrigger för att bläddra bakåt bland bilderna */
+document.body.addEventListener('click', function (e) {
+    if (e.target.classList.contains('prev')) {
+        plusSlides(-1);
+    }
+})
+
+/* eventtrigger för att få image control att fungera */
+
+document.body.addEventListener('click', function (e) {
+    if (e.target.classList.contains('dot')) {
+        currentSlide(e.target.id);
     }
 })
