@@ -9,6 +9,7 @@
     background-color: white;
     border: 1px solid black;
     margin-bottom: 500px;
+    display: none;
     
 
     img {
@@ -22,7 +23,7 @@
 
 #closeBtn {
     position: absolute;
-    top: 1%;
+    top: 5px;
     right: 1%;
     font-size: 3em;
 }
@@ -40,6 +41,10 @@
 .review {
     margin-bottom: 40px;
     text-align: center;
+    border: black solid 1px;
+    margin-left: 100px;
+    margin-right: 100px;
+    padding-bottom: 50px;
 }
 .review h1,
 h2,
