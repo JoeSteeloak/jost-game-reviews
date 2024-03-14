@@ -35,9 +35,8 @@ searchBtnEl.addEventListener("click", fetchGame, false);
 
 async function fetchGame() {
 
-    /* rensa gamal sökning */
+    /* rensa gammal sökning */
     gameResultEl.innerHTML = '';
-    gameReviewEl.innerHTML = '';
 
     /* variabler för OpenCritic API: Game Search */
     const url1 = `https://opencritic-api.p.rapidapi.com/game/search?criteria=${searchValue.value}`;
@@ -75,6 +74,10 @@ async function showReview(gameId, gameName) {
 
     /* rensa diven på recensioner */
     gameReviewEl.innerHTML = '';
+
+    /* ändra display så diven syns */
+
+    gameReviewEl.style.display = 'block';
 
     try {
         /* fetch recensioner från API 1 */
@@ -152,12 +155,16 @@ async function showReview(gameId, gameName) {
 
         /* Ladda in 3 recensioner och skapa en div för varje resultat */
         for (let i = 0; i < 3; i++) {
-            const reviewTitle = result[i].title;
-            const reviewScore = result[i].score;
+            let reviewTitle = result[i].title;
+            // Om reviewTitle är undefined, tilldela den en sträng
+            if (typeof reviewTitle === 'undefined') {
+                reviewTitle = 'Recension';
+            }
+            const reviewScore = result[i].score + ' / 100';
             const reviewOutlet = result[i].Outlet.name;
             const reviewSnippet = result[i].snippet;
             const reviewUrl = result[i].externalUrl;
-            gameReviewEl.innerHTML += `<div class='review'><h2>${reviewTitle}</h2><p>${reviewSnippet}</p><h3>${reviewScore} / 100</h3><p id='outlet'>Published in: ${reviewOutlet}</p><a href=${reviewUrl}>Läs mer</a></div>`;
+            gameReviewEl.innerHTML += `<div class='review'><h2>${reviewTitle}</h2><p>${reviewSnippet}</p><h3>${reviewScore}</h3><p id='outlet'>Published in: ${reviewOutlet}</p><a href=${reviewUrl}>Läs mer</a></div>`;
         }
         /* initierar slideshow */
         showSlides(slideIndex);
@@ -222,5 +229,6 @@ document.body.addEventListener('click', function (e) {
 document.body.addEventListener('click', function (e) {
     if (e.target.classList.contains('fa-xmark')) {
         gameReviewEl.innerHTML = '';
+        gameReviewEl.style.display = 'none';
     }
 })
