@@ -1,9 +1,6 @@
 "use strict";
 
-
-
 /* variabler */
-
 let slideIndex = 1; /* till slideshow */
 
 const searchBtnEl = document.getElementById("searchBtn");
@@ -25,14 +22,10 @@ const options2 = {
     }
 };
 
-
 /* eventhandlers */
-
 searchBtnEl.addEventListener("click", fetchGame, false);
 
-
 /* Hämta  API  */
-
 async function fetchGame() {
 
     /* rensa gammal sökning */
@@ -44,7 +37,6 @@ async function fetchGame() {
     try {
         const response = await fetch(url1, options1);
         const result = await response.json();
-
 
         /* Ladda in namn och skapa en div för varje resultat */
         result.forEach(e => {
@@ -76,7 +68,6 @@ async function showReview(gameId, gameName) {
     gameReviewEl.innerHTML = '';
 
     /* ändra display så diven syns */
-
     gameReviewEl.style.display = 'block';
 
     try {
@@ -173,7 +164,6 @@ async function showReview(gameId, gameName) {
         console.error(error);
     }
 }
-
 
 /* SLIDESHOW */
 // Next/previous controls
